@@ -1,0 +1,30 @@
+```
+# Android build outputs
+*.apk
+*.aar
+*.dex
+
+# Android build directories
+build/
+.externalNativeBuild/
+.intermediates/
+.profile/
+captures/
+outputs/
+
+# Gradle
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Android Studio navigation editor temporal files
+.navigation/
+
+# Android Studio profiler output
+*.hprof
+
+# Backup for Ionic projects
+ionic.config.json
+```
