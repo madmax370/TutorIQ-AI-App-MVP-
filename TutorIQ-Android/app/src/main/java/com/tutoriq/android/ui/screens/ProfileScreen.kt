@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,6 +24,7 @@ import com.tutoriq.android.ui.theme.Background
 import com.tutoriq.android.ui.theme.Success
 import com.tutoriq.android.ui.theme.Error as ErrorColor
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     university: String,
@@ -102,7 +104,7 @@ fun ProfileScreen(
         
         Spacer(modifier = Modifier.height(24.dp))
         
-        HorizontalDivider(color = Primary.copy(alpha = 0.3f))
+        Divider(color = Primary.copy(alpha = 0.3f))
         
         Spacer(modifier = Modifier.height(24.dp))
         

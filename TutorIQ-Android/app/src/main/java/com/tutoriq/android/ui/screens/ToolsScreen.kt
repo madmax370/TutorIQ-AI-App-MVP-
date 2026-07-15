@@ -22,6 +22,7 @@ import com.tutoriq.android.ui.theme.Surface
 
 data class Message(val text: String, val isUser: Boolean)
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ToolsScreen(
     subject: String,

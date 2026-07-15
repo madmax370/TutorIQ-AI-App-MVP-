@@ -19,6 +19,7 @@ import com.tutoriq.android.ui.components.GlassCard
 import com.tutoriq.android.ui.theme.Primary
 import com.tutoriq.android.ui.theme.Background
 import com.tutoriq.android.ui.theme.Surface
+import com.tutoriq.android.ui.theme.OnSurface
 
 @Composable
 fun DashboardScreen(
@@ -134,6 +135,7 @@ fun DashboardScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ActionCard(
     title: String,

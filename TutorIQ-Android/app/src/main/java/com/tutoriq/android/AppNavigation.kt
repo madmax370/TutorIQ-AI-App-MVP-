@@ -1,7 +1,10 @@
 package com.tutoriq.android
 
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.navigation.NavHostController
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -31,6 +34,9 @@ fun AppNavigation(dataStoreManager: DataStoreManager) {
     
     var isLoggedIn by remember { mutableStateOf(false) }
     var userName by remember { mutableStateOf<String?>(null) }
+    var loginError by remember { mutableStateOf<String?>(null) }
+    var signupError by remember { mutableStateOf<String?>(null) }
+    var isLoading by remember { mutableStateOf(false) }
     
     var university by remember { mutableStateOf("") }
     var semester by remember { mutableStateOf("") }
@@ -62,49 +68,55 @@ fun AppNavigation(dataStoreManager: DataStoreManager) {
             LoginScreen(
                 onLoginClick = { email, password ->
                     scope.launch {
-                        try {
-                            val response = RetrofitClient.apiService.login(LoginRequest(email, password))
-                            if (response.isSuccessful && response.body()?.token != null) {
-                                val token = response.body()!!.token!!
-                                dataStoreManager.saveAuthToken(token)
-                                val user = response.body()!!.user
-                                if (user != null) {
-                                    dataStoreManager.saveUserInfo(user.id, user.name, user.email)
-                                }
-                                isLoggedIn = true
-                                navController.navigate(Screen.Dashboard.route) {
-                                    popUpTo(Screen.Login.route) { inclusive = true }
-                                }
-                            }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
+                        isLoading = true
+                        // Dummy Login: Success for any gmail account
+                        kotlinx.coroutines.delay(1000) // Simulate network delay
+                        
+                        dataStoreManager.saveAuthToken("dummy_token")
+                        dataStoreManager.saveUserInfo("1", "Demo User", email)
+                        isLoggedIn = true
+                        
+                        navController.navigate(Screen.Dashboard.route) {
+                            popUpTo(Screen.Login.route) { inclusive = true }
                         }
+                        isLoading = false
                     }
                 },
                 onNavigateToSignup = {
+                    loginError = null
                     navController.navigate(Screen.Signup.route)
                 }
             )
+            
+            if (isLoading) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.Center) {
+                    CircularProgressIndicator(color = com.tutoriq.android.ui.theme.Primary)
+                }
+            }
         }
         
         composable(Screen.Signup.route) {
             SignupScreen(
                 onSignupClick = { name, email, password ->
                     scope.launch {
-                        try {
-                            val response = RetrofitClient.apiService.register(RegisterRequest(name, email, password))
-                            if (response.isSuccessful) {
-                                navController.popBackStack()
-                            }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
+                        isLoading = true
+                        // Dummy Signup: Just navigate back to login
+                        kotlinx.coroutines.delay(1000)
+                        navController.popBackStack()
+                        isLoading = false
                     }
                 },
                 onNavigateToLogin = {
+                    signupError = null
                     navController.popBackStack()
                 }
             )
+
+            if (isLoading) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.Center) {
+                    CircularProgressIndicator(color = com.tutoriq.android.ui.theme.Primary)
+                }
+            }
         }
         
         composable(Screen.Dashboard.route) {
